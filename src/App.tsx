@@ -1,91 +1,67 @@
- /* eslint-disable */
+/* eslint-disable */
 
-import React, { useEffect, useState } from 'react';
-import './App.css';
+import React, { useState } from "react";
 
-async function getArtwork(id: number) {
-  return fetch('https://api.artic.edu/api/v1/artworks/' + id);
+import ArtItem from "./components/ArtItem";
+import AddArtForm from "./components/AddArtForm";
+import "./App.css";
+
+interface Art {
+  id: number;
+  disabled: boolean;
 }
 
-function getImageUrl(id: string) {
-  return 'https://www.artic.edu/iiif/2/' + id + '/full/843,/0/default.jpg'
+interface AppProps {
+  initialArts?: Art[];
 }
 
-function ArtItem(props: any) {
-  const [voted, setVoted] = useState<boolean>(false)
-  const [artwork, setArtwork] = useState<any>(null)
+function App({ initialArts }: AppProps) {
+  const [arts, setArts] = useState<Art[]>(
+    initialArts || [
+      { id: 27992, disabled: false },
+      { id: 27998, disabled: false },
+      { id: 27999, disabled: false },
+      { id: 27997, disabled: true },
+      { id: 27993, disabled: false },
+    ]
+  );
 
-  const submit = () => {
-    console.log("Submitting!")
-    /* 
-    Please have the submit button POST to https://20e2q.mocklab.io/rating with the following payload:
-
-      {
-        "id": {#id},
-        "rating": {#rating}
-      }
-
-    Where id is the artwork's id, and rating is the selected rating.
-
-    The endpoint should return the following:
-
-    {
-      "message": "Success"
-    }
-  */
-    return () => {};
-  };
-
-  if (props.disabled)
-  {
-    return <></>;
+  function handleRemoveArt(idToRemove: number) {
+    console.log("ID of art to remove:", idToRemove);
+    let newArts = arts.map((art: Art) =>
+      art.id === idToRemove ? { ...art, disabled: true } : art
+    );
+    console.log("New Arts:", JSON.stringify(newArts));
+    setArts(newArts);
   }
-  
-  useEffect( () => {
-    getArtwork(props.id).then(r => r.json()).then(json => setArtwork(json))
-  }, []);
 
-  return (
-    <div className="item">
-        <h2>{artwork && artwork.data.title}</h2>
-        <h3>{artwork && artwork.data.artist_title}</h3>
-        <img style={ { width: 100 } } src={artwork != null ? getImageUrl(artwork.data.image_id) : ""} />
-        <p>Rating: {artwork && artwork.rating}</p>
-        <button onClick={() => { artwork.rating = 1; setVoted(true); }}>1</button>
-        <button onClick={() => { artwork.rating = 2; setVoted(true); }}>2</button>
-        <button onClick={() => { artwork.rating = 3; setVoted(true); }}>3</button>
-        <button onClick={() => { artwork.rating = 4; setVoted(true); }}>4</button>
-        <button onClick={() => { artwork.rating = 5; setVoted(true); }}>5</button>
-        <button onClick={submit()}>Submit</button>
-    </div>
-  )
-}
-
-function App() {
-  const [arts, setArts] = useState<any>([])
-  
-  const a = [
-    { id: 27992, disabled: false },
-    { id: 27998, disabled: false },
-    { id: 27999, disabled: false },
-    { id: 27997, disabled: true },
-    { id: 27993, disabled: false },
-  ];
-
-  useEffect(() => {
-    const temp = []
-    for (let i = 0; i < a.length; i++) {
-      temp.push(<ArtItem id={a[i].id} disabled={a[i].disabled}></ArtItem>)
+  function handleAddArt(idToAdd: number) {
+    const idExists = arts.some((art: Art) => art.id === idToAdd);
+    if (idExists) {
+      alert(`We're already displaying art with id: ${idToAdd}.`);
+      return;
     }
-    setArts(temp)
-  }, [setArts])
+
+    setArts([...arts, { id: idToAdd, disabled: false }]);
+  }
 
   return (
     <div className="App">
       <h1>Art Rater</h1>
-      {arts}
+      <div>
+        {arts.map((art: { id: number; disabled: boolean }) => (
+          <ArtItem
+            id={art.id}
+            disabled={art.disabled}
+            removeArt={() => handleRemoveArt(art.id)}
+          ></ArtItem>
+        ))}
+      </div>
+      <div>
+        <AddArtForm addArt={handleAddArt}></AddArtForm>
+      </div>
     </div>
   );
 }
 
-export {App, ArtItem};
+export { App };

@@ -1,22 +1,105 @@
-import { render, screen , fireEvent } from '@testing-library/react';
-import { App, ArtItem } from './App';
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { App } from "./App";
+import ArtItem from "./components/ArtItem";
+import { submitRating } from "./api/ArtworkApi";
 
-test('has title', () => {
+test("has title", () => {
+  //GIVEN - the app has rendered
   render(<App />);
+
+  //WHEN - we get the expected title of the app
   const title = screen.getByText("Art Rater");
+
+  //THEN - the title should be in the document
   expect(title).toBeInTheDocument();
 });
 
-test('for an art item, submit button is disabled until a rating is selected', () => {
+test("for an art item, submit button is disabled until a rating is selected", () => {
+  //GIVEN - a test piece of art that is not disabled
+  const testArt = { id: 27992, disabled: false };
+
+  //AND - is has just been rendered with this test data
+  render(<ArtItem {...testArt} removeArt={() => {}} />);
+
+  //THEN - we should expect the button to be disabled
+  const submitButton = screen.getByText("Submit");
+  expect(submitButton).toBeDisabled();
+
+  //AND - when we select a rating
+  const ratingButton = screen.getByText("3");
+  fireEvent.click(ratingButton);
+
+  //THEN - the submit button should no longer be disabled
+  expect(submitButton).not.toBeDisabled();
 });
 
-test('for an art item, clicking numbered button updates rating display below image to be that number', () => {
+test("for an art item, clicking numbered button updates rating display below image to be that number", () => {
+  //GIVEN - a test piece of art that is not disabled
+  const testArt = { id: 27992, disabled: false };
+
+  //AND - is has just been rendered with this test data
+  render(<ArtItem {...testArt} removeArt={() => {}} />);
+
+  //AND - we click on a numbered rating button
+  let ratingButton = screen.getByText("1");
+  fireEvent.click(ratingButton);
+
+  //THEN - the rating display below the image should be that number
+  const ratingDisplay = screen.getByText("Rating: 1");
+  expect(ratingDisplay).toBeInTheDocument();
 });
 
-test('for an art item, clicking numbered button updates rating display below image to be that number, clicking two different numbers one after the other', () => {
+test("for an art item, clicking numbered button updates rating display below image to be that number, clicking two different numbers one after the other", () => {
+  //GIVEN - a test piece of art that is not disabled
+  const testArt = { id: 27992, disabled: false };
+
+  //AND - is has just been rendered with this test data
+  render(<ArtItem {...testArt} removeArt={() => {}} />);
+
+  //AND - we click on a numbered rating button
+  let ratingButton1 = screen.getByText("1");
+  fireEvent.click(ratingButton1);
+
+  //AND - we click on a numbered rating button
+  let ratingButton2 = screen.getByText("2");
+  fireEvent.click(ratingButton2);
+
+  //THEN - the rating display below the image should be the second rating we clicked
+  const ratingDisplay = screen.getByText("Rating: 2");
+  expect(ratingDisplay).toBeInTheDocument();
+
+  //
 });
 
-test('for an art item, clicking submit POSTs update, displays a toast success message, hides buttons', () => {
-  // The endpoint and payload for the submit button can be found in the submit method in `App.tsx`.
-  // For the purpose of this test, please use a mock function instead.
+test("for an art item, clicking submit POSTs update, displays a toast success message, hides buttons", async () => {
+  //SETUP - mock the submission POST call
+  jest.mock("./api/ArtworkApi", () => ({
+    submitRating: jest.fn(),
+  }));
+
+  //GIVEN - a test piece of art that is not disabled
+  const testArt = { id: 27992, disabled: false };
+
+  //AND - is has just been rendered with this test data
+  render(<ArtItem {...testArt} removeArt={() => {}} />);
+
+  //AND - we click on a numbered rating button
+  let ratingButton = screen.getByText("3");
+  fireEvent.click(ratingButton);
+
+  //AND - we submit our rating
+  const submitButton = screen.getByText("Submit");
+  fireEvent.click(submitButton);
+
+  //THEN - we should see a success message
+  await waitFor(() => {
+    const successMessage = screen.getByText(
+      "Thank you for submitting your rating!"
+    );
+    expect(successMessage).toBeInTheDocument();
+  });
+
+  //AND - the rating buttons should now be hidden
+  const ratingButtons = screen.queryAllByText("3");
+  expect(ratingButtons.length).toBe(0);
 });
