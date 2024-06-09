@@ -5,6 +5,22 @@ import React, { useState } from "react";
 import ArtItem from "./components/ArtItem";
 import AddArtForm from "./components/AddArtForm";
 import "./App.css";
+import {
+  AppShell,
+  Group,
+  Title,
+  Tabs,
+  Card,
+  Select,
+  Input,
+  Divider,
+  Grid,
+  Stack,
+  Button,
+  Pagination,
+  Text,
+  Image,
+} from "@mantine/core";
 
 interface Art {
   id: number;
@@ -46,21 +62,28 @@ function App({ initialArts }: AppProps) {
   }
 
   return (
-    <div className="App">
-      <h1>Art Rater</h1>
-      <div>
-        {arts.map((art: { id: number; disabled: boolean }) => (
-          <ArtItem
-            id={art.id}
-            disabled={art.disabled}
-            removeArt={() => handleRemoveArt(art.id)}
-          ></ArtItem>
-        ))}
-      </div>
-      <div>
-        <AddArtForm addArt={handleAddArt}></AddArtForm>
-      </div>
-    </div>
+    <AppShell>
+      <AppShell.Main>
+        <Grid>
+          <Grid.Col span={4}>1</Grid.Col>
+          <Grid.Col span={4}>2</Grid.Col>
+          <Grid.Col span={4}>3</Grid.Col>
+        </Grid>
+        <h1>Art Rater</h1>
+        <div>
+          {arts.map((art: { id: number; disabled: boolean }) => (
+            <ArtItem
+              id={art.id}
+              disabled={art.disabled}
+              removeArt={() => handleRemoveArt(art.id)}
+            ></ArtItem>
+          ))}
+        </div>
+        <div>
+          <AddArtForm addArt={handleAddArt}></AddArtForm>
+        </div>
+      </AppShell.Main>
+    </AppShell>
   );
 }
 

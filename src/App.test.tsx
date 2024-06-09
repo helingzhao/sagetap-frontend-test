@@ -1,4 +1,6 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import React from "react";
+import { screen, fireEvent, waitFor } from "@testing-library/react";
+import { render } from "./test-utils"; // Import the custom render function
 import { App } from "./App";
 import ArtItem from "./components/ArtItem";
 import { submitRating } from "./api/ArtworkApi";
@@ -71,11 +73,16 @@ test("for an art item, clicking numbered button updates rating display below ima
   //
 });
 
+//SETUP - mock the submission POST call
+jest.mock("./api/ArtworkApi", () => ({
+  submitRating: jest.fn(),
+}));
+
 test("for an art item, clicking submit POSTs update, displays a toast success message, hides buttons", async () => {
-  //SETUP - mock the submission POST call
-  jest.mock("./api/ArtworkApi", () => ({
-    submitRating: jest.fn(),
-  }));
+  // SETUP - mock the submission POST call
+  (submitRating as jest.Mock).mockResolvedValue({
+    message: "Success",
+  });
 
   //GIVEN - a test piece of art that is not disabled
   const testArt = { id: 27992, disabled: false };
