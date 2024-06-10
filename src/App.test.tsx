@@ -15,7 +15,7 @@ beforeEach(() => {
   (getArtwork as jest.Mock).mockResolvedValue({
     title: "Test Artwork",
     artist_title: "Test Artist",
-    image_id: "test_image_id",
+    image_id: 123,
   });
 
   (getImageUrl as jest.Mock).mockResolvedValue("onLoanImage");
@@ -38,7 +38,7 @@ test("has title", () => {
 
 test("for an art item, submit button is disabled until a rating is selected", () => {
   //GIVEN - a test piece of art that is not disabled
-  const testArt = { id: 27992, disabled: false };
+  const testArt = { id: 123, disabled: false };
 
   //AND - is has just been rendered with this test data
   render(<ArtItem {...testArt} removeArt={() => {}} />);
@@ -57,7 +57,7 @@ test("for an art item, submit button is disabled until a rating is selected", ()
 
 test("for an art item, clicking numbered button updates rating display below image to be that number", () => {
   //GIVEN - a test piece of art that is not disabled
-  const testArt = { id: 27992, disabled: false };
+  const testArt = { id: 123, disabled: false };
 
   //AND - is has just been rendered with this test data
   render(<ArtItem {...testArt} removeArt={() => {}} />);
@@ -73,7 +73,7 @@ test("for an art item, clicking numbered button updates rating display below ima
 
 test("for an art item, clicking numbered button updates rating display below image to be that number, clicking two different numbers one after the other", () => {
   //GIVEN - a test piece of art that is not disabled
-  const testArt = { id: 27992, disabled: false };
+  const testArt = { id: 123, disabled: false };
 
   //AND - is has just been rendered with this test data
   render(<ArtItem {...testArt} removeArt={() => {}} />);
@@ -95,7 +95,7 @@ test("for an art item, clicking numbered button updates rating display below ima
 
 test("for an art item, clicking submit POSTs update, displays a toast success message, hides buttons", async () => {
   //GIVEN - a test piece of art that is not disabled
-  const testArt = { id: 27992, disabled: false };
+  const testArt = { id: 123, disabled: false };
 
   //AND - is has just been rendered with this test data
   render(<ArtItem {...testArt} removeArt={() => {}} />);
