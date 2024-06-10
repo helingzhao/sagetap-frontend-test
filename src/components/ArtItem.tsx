@@ -10,6 +10,8 @@ import {
   styled,
 } from "@mui/material";
 
+import Item from "../styling/Item";
+
 import { getArtwork, getImageUrl, submitRating } from "../api/ArtworkApi";
 import { ArtworkData } from "../api/models/ArtworkData";
 import RatingButtons from "./RatingButtons";
@@ -83,36 +85,34 @@ function ArtItem(props: ArtItemProps) {
 
   if (artNotAvailable) {
     return (
-      <div className="artItem">
-        <h2>Nothing here to see...</h2>
-        <h3>This artwork is currently on loan.</h3>
-        <Container maxWidth="sm">
-          <img src={onLoanImage} />
-        </Container>
-        <br></br>
-        <Button variant="contained" onClick={() => removeArt(id)}>
-          Remove Art
-        </Button>
-      </div>
+      <Item>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <h2>Nothing here to see...</h2>
+          <h3>This artwork is currently on loan.</h3>
+          <Container maxWidth="sm">
+            <img width={200} max-height={200} src={onLoanImage} />
+          </Container>
+          <br></br>
+          <Button onClick={() => removeArt(id)}>Remove Art</Button>
+        </Box>
+      </Item>
     );
   }
 
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-  }));
-
   return (
     <Item>
-      <Box
+      <Container
         sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
       >
         <h2>{artwork && artwork.title}</h2>
         <h3>{artwork && artwork.artist_title}</h3>
-        <Box
+        <Container
           sx={{
             position: "relative",
             width: "100%",
@@ -125,7 +125,7 @@ function ArtItem(props: ArtItemProps) {
             max-height={200}
             src={artwork != null ? getImageUrl(artwork.image_id) : ""}
           />
-        </Box>
+        </Container>
         <p>ID: {id}</p>
         <p>Rating: {voted && currentRating}</p>
         {ratingSubmitted && <p>Thank you for submitting your rating!</p>}
@@ -135,7 +135,9 @@ function ArtItem(props: ArtItemProps) {
           currentRating={currentRating}
           setCurrentRating={handleSetCurrentRating}
         ></RatingButtons>
+        <br></br>
         <Button
+          variant="contained"
           hidden={ratingSubmitted || ratingSubmissionIsLoading}
           disabled={!voted}
           onClick={submit}
@@ -143,10 +145,8 @@ function ArtItem(props: ArtItemProps) {
           Submit
         </Button>
         <br></br>
-        <Button variant="contained" onClick={() => removeArt(id)}>
-          Remove Art
-        </Button>
-      </Box>
+        <Button onClick={() => removeArt(id)}>Remove Art</Button>
+      </Container>
     </Item>
   );
 }

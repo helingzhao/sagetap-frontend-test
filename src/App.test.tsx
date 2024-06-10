@@ -48,7 +48,7 @@ test("for an art item, submit button is disabled until a rating is selected", ()
   expect(submitButton).toHaveProperty("disabled", true);
 
   //AND - when we select a rating
-  const ratingButton = screen.getByText("3");
+  const ratingButton = screen.getByText("3 Stars");
   fireEvent.click(ratingButton);
 
   //THEN - the submit button should no longer be disabled
@@ -64,7 +64,7 @@ test("for an art item, clicking numbered button updates rating display below ima
   render(<ArtItem {...testArt} removeArt={() => {}} />);
 
   //AND - we click on a numbered rating button
-  let ratingButton = screen.getByText("1");
+  let ratingButton = screen.getByText("1 Star");
   fireEvent.click(ratingButton);
 
   //THEN - the rating display below the image should be that number
@@ -80,11 +80,11 @@ test("for an art item, clicking numbered button updates rating display below ima
   render(<ArtItem {...testArt} removeArt={() => {}} />);
 
   //AND - we click on a numbered rating button
-  let ratingButton1 = screen.getByText("1");
+  let ratingButton1 = screen.getByText("1 Star");
   fireEvent.click(ratingButton1);
 
   //AND - we click on a numbered rating button
-  let ratingButton2 = screen.getByText("2");
+  let ratingButton2 = screen.getByText("2 Stars");
   fireEvent.click(ratingButton2);
 
   //THEN - the rating display below the image should be the second rating we clicked
@@ -102,7 +102,7 @@ test("for an art item, clicking submit POSTs update, displays a toast success me
   render(<ArtItem {...testArt} removeArt={() => {}} />);
 
   //AND - we click on a numbered rating button
-  const ratingButton = screen.getByText("3");
+  const ratingButton = screen.getByText("3 Stars");
   fireEvent.click(ratingButton);
 
   //AND - we submit our rating
@@ -118,6 +118,6 @@ test("for an art item, clicking submit POSTs update, displays a toast success me
   });
 
   //AND - the rating buttons should now be hidden
-  const ratingButtons = screen.queryAllByText("3");
+  const ratingButtons = screen.queryAllByText("3 Stars");
   expect(ratingButtons.length).toBe(0);
 });

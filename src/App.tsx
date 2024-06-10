@@ -22,16 +22,14 @@ function App({ initialArts }: AppProps) {
       { id: 27992, disabled: false },
       { id: 27998, disabled: false },
       { id: 27999, disabled: false },
-      { id: 27997, disabled: true },
+      { id: 27997, disabled: false },
       { id: 27993, disabled: false },
     ]
   );
 
   function handleRemoveArt(idToRemove: number) {
     console.log("ID of art to remove:", idToRemove);
-    let newArts = arts.map((art: Art) =>
-      art.id === idToRemove ? { ...art, disabled: true } : art
-    );
+    let newArts = arts.filter((art: Art) => art.id !== idToRemove);
     console.log("New Arts:", JSON.stringify(newArts));
     setArts(newArts);
   }
