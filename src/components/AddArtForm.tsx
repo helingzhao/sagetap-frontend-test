@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Input, Button } from "@mantine/core";
 
 interface AddArtFormProps {
   addArt: (id: number) => void;
@@ -20,7 +19,7 @@ function AddArtForm(props: AddArtFormProps) {
         value={id}
         onChange={(event) => setId(parseInt(event.target.value))}
       />
-      <Button onClick={handleAddArt}>Add</Button>
+      <button onClick={handleAddArt}>Add</button>
     </div>
   );
 }

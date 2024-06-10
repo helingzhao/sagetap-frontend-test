@@ -49,8 +49,10 @@ function ArtItem(props: ArtItemProps) {
     setRatingSubmissionIsLoading(true);
     submitRating(id, currentRating)
       .then(() => {
+        console.log("Submitted!");
         setRatingSubmitted(true);
         setRatingSubmissionIsLoading(false);
+        console.log("Submitted! At the end!");
       })
       .catch((error) => {
         if (error instanceof RatingSubmissionError) {

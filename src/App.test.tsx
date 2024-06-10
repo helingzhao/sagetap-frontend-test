@@ -1,9 +1,29 @@
 import React from "react";
-import { screen, fireEvent, waitFor } from "@testing-library/react";
-import { render } from "./test-utils"; // Import the custom render function
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { App } from "./App";
 import ArtItem from "./components/ArtItem";
-import { submitRating } from "./api/ArtworkApi";
+import { getArtwork, getImageUrl, submitRating } from "./api/ArtworkApi";
+
+// Mock ArtworkApi - we don't want to be depending on network connectivity!
+jest.mock("./api/ArtworkApi", () => ({
+  getArtwork: jest.fn(),
+  getImageUrl: jest.fn(),
+  submitRating: jest.fn(),
+}));
+
+beforeEach(() => {
+  (getArtwork as jest.Mock).mockResolvedValue({
+    title: "Test Artwork",
+    artist_title: "Test Artist",
+    image_id: "test_image_id",
+  });
+
+  (getImageUrl as jest.Mock).mockResolvedValue("onLoanImage");
+
+  (submitRating as jest.Mock).mockResolvedValue({
+    message: "Success",
+  });
+});
 
 test("has title", () => {
   //GIVEN - the app has rendered
@@ -73,17 +93,7 @@ test("for an art item, clicking numbered button updates rating display below ima
   //
 });
 
-//SETUP - mock the submission POST call
-jest.mock("./api/ArtworkApi", () => ({
-  submitRating: jest.fn(),
-}));
-
 test("for an art item, clicking submit POSTs update, displays a toast success message, hides buttons", async () => {
-  // SETUP - mock the submission POST call
-  (submitRating as jest.Mock).mockResolvedValue({
-    message: "Success",
-  });
-
   //GIVEN - a test piece of art that is not disabled
   const testArt = { id: 27992, disabled: false };
 
@@ -91,7 +101,7 @@ test("for an art item, clicking submit POSTs update, displays a toast success me
   render(<ArtItem {...testArt} removeArt={() => {}} />);
 
   //AND - we click on a numbered rating button
-  let ratingButton = screen.getByText("3");
+  const ratingButton = screen.getByText("3");
   fireEvent.click(ratingButton);
 
   //AND - we submit our rating

@@ -1,5 +1,3 @@
-import { Button } from "@mantine/core";
-
 interface RatingButtonsProps {
   currentRating: number;
   hidden: boolean;
@@ -15,9 +13,9 @@ function RatingButtons(props: RatingButtonsProps) {
   return (
     <div>
       {ratings.map((rating) => (
-        <Button key={rating} onClick={() => setCurrentRating(rating)}>
+        <button key={rating} onClick={() => setCurrentRating(rating)}>
           {rating}
-        </Button>
+        </button>
       ))}
     </div>
   );
