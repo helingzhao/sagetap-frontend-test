@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Card,
-  CardContent,
-  CardMedia,
-  Container,
-  Button,
-  Paper,
-  styled,
-} from "@mui/material";
+import { Box, Typography, Container, Button } from "@mui/material";
 
 import Item from "../styling/Item";
 
@@ -86,32 +77,28 @@ function ArtItem(props: ArtItemProps) {
   if (artNotAvailable) {
     return (
       <Item>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <h2>Nothing here to see...</h2>
-          <h3>This artwork is currently on loan.</h3>
+        <Container>
+          <Typography variant="h4">Nothing here to see...</Typography>
+          <Typography variant="body1">
+            This artwork is currently on loan.
+          </Typography>
           <Container maxWidth="sm">
-            <img width={200} max-height={200} src={onLoanImage} />
+            <img width="100%" max-height={200} src={onLoanImage} />
           </Container>
           <br></br>
           <Button onClick={() => removeArt(id)}>Remove Art</Button>
-        </Box>
+        </Container>
       </Item>
     );
   }
 
   return (
     <Item>
-      <Container
-        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-      >
-        <h2>{artwork && artwork.title}</h2>
-        <h3>{artwork && artwork.artist_title}</h3>
+      <Container>
+        <Typography variant="h4">{artwork && artwork.title}</Typography>
+        <Typography variant="body1">
+          {artwork && artwork.artist_title}
+        </Typography>
         <Container
           sx={{
             position: "relative",
@@ -121,14 +108,20 @@ function ArtItem(props: ArtItemProps) {
           }}
         >
           <img
-            width={200}
+            width="100%"
             max-height={200}
             src={artwork != null ? getImageUrl(artwork.image_id) : ""}
           />
+          <Typography variant="body1">ID: {id}</Typography>
         </Container>
-        <p>ID: {id}</p>
-        <p>Rating: {voted && currentRating}</p>
-        {ratingSubmitted && <p>Thank you for submitting your rating!</p>}
+        <Typography variant="body1">
+          Rating: {voted && currentRating}
+        </Typography>
+        {ratingSubmitted && (
+          <Typography variant="body1">
+            Thank you for submitting your rating!
+          </Typography>
+        )}
         {ratingSubmissionIsLoading && <img src={loadingGif} />}
         <RatingButtons
           hidden={ratingSubmitted || ratingSubmissionIsLoading}

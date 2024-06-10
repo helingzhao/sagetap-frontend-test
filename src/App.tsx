@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
-import { Box, Container, Button, Paper, styled } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import ArtItem from "./components/ArtItem";
 import AddArtForm from "./components/AddArtForm";
 import "./App.css";
@@ -46,10 +46,10 @@ function App({ initialArts }: AppProps) {
 
   return (
     <Box>
-      <Container maxWidth="sm">
-        <h1>Art Rater</h1>
+      <Container>
+        <Typography variant="h1">Art Rater</Typography>
       </Container>
-      <Container maxWidth="sm">
+      <Container>
         <Grid container spacing={2}>
           {arts.map((art: { id: number; disabled: boolean }) => (
             <Grid xs={6} sm={6} md={6} lg={6} xl={6} key={art.id}>
@@ -61,6 +61,8 @@ function App({ initialArts }: AppProps) {
             </Grid>
           ))}
         </Grid>
+      </Container>
+      <Container>
         <AddArtForm addArt={handleAddArt}></AddArtForm>
       </Container>
     </Box>
