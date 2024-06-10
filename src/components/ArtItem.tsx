@@ -1,4 +1,15 @@
 import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Container,
+  Button,
+  Paper,
+  styled,
+} from "@mui/material";
+
 import { getArtwork, getImageUrl, submitRating } from "../api/ArtworkApi";
 import { ArtworkData } from "../api/models/ArtworkData";
 import RatingButtons from "./RatingButtons";
@@ -49,10 +60,8 @@ function ArtItem(props: ArtItemProps) {
     setRatingSubmissionIsLoading(true);
     submitRating(id, currentRating)
       .then(() => {
-        console.log("Submitted!");
         setRatingSubmitted(true);
         setRatingSubmissionIsLoading(false);
-        console.log("Submitted! At the end!");
       })
       .catch((error) => {
         if (error instanceof RatingSubmissionError) {
@@ -77,41 +86,68 @@ function ArtItem(props: ArtItemProps) {
       <div className="artItem">
         <h2>Nothing here to see...</h2>
         <h3>This artwork is currently on loan.</h3>
-        <div style={{ display: "flex" }}>
+        <Container maxWidth="sm">
           <img src={onLoanImage} />
-        </div>
+        </Container>
         <br></br>
-        <button onClick={() => removeArt(id)}>Remove Art</button>
+        <Button variant="contained" onClick={() => removeArt(id)}>
+          Remove Art
+        </Button>
       </div>
     );
   }
 
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+  }));
+
   return (
-    <div className="artItem">
-      <h2>{artwork && artwork.title}</h2>
-      <h3>{artwork && artwork.artist_title}</h3>
-      <div style={{ display: "flex" }}>
-        <img src={artwork != null ? getImageUrl(artwork.image_id) : ""} />
-      </div>
-      <p>ID: {id}</p>
-      <p>Rating: {voted && currentRating}</p>
-      {ratingSubmitted && <p>Thank you for submitting your rating!</p>}
-      {ratingSubmissionIsLoading && <img src={loadingGif} />}
-      <RatingButtons
-        hidden={ratingSubmitted || ratingSubmissionIsLoading}
-        currentRating={currentRating}
-        setCurrentRating={handleSetCurrentRating}
-      ></RatingButtons>
-      <button
-        hidden={ratingSubmitted || ratingSubmissionIsLoading}
-        disabled={!voted}
-        onClick={submit}
+    <Item>
+      <Box
+        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
       >
-        Submit
-      </button>
-      <br></br>
-      <button onClick={() => removeArt(id)}>Remove Art</button>
-    </div>
+        <h2>{artwork && artwork.title}</h2>
+        <h3>{artwork && artwork.artist_title}</h3>
+        <Box
+          sx={{
+            position: "relative",
+            width: "100%",
+            paddingTop: "10%",
+            overflow: "hidden",
+          }}
+        >
+          <img
+            width={200}
+            max-height={200}
+            src={artwork != null ? getImageUrl(artwork.image_id) : ""}
+          />
+        </Box>
+        <p>ID: {id}</p>
+        <p>Rating: {voted && currentRating}</p>
+        {ratingSubmitted && <p>Thank you for submitting your rating!</p>}
+        {ratingSubmissionIsLoading && <img src={loadingGif} />}
+        <RatingButtons
+          hidden={ratingSubmitted || ratingSubmissionIsLoading}
+          currentRating={currentRating}
+          setCurrentRating={handleSetCurrentRating}
+        ></RatingButtons>
+        <Button
+          hidden={ratingSubmitted || ratingSubmissionIsLoading}
+          disabled={!voted}
+          onClick={submit}
+        >
+          Submit
+        </Button>
+        <br></br>
+        <Button variant="contained" onClick={() => removeArt(id)}>
+          Remove Art
+        </Button>
+      </Box>
+    </Item>
   );
 }
 

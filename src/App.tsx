@@ -1,7 +1,8 @@
 /* eslint-disable */
 
 import React, { useState } from "react";
-
+import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
+import { Box, Container, Button, Paper, styled } from "@mui/material";
 import ArtItem from "./components/ArtItem";
 import AddArtForm from "./components/AddArtForm";
 import "./App.css";
@@ -46,21 +47,25 @@ function App({ initialArts }: AppProps) {
   }
 
   return (
-    <div>
-      <h1>Art Rater</h1>
-      <div>
-        {arts.map((art: { id: number; disabled: boolean }) => (
-          <ArtItem
-            id={art.id}
-            disabled={art.disabled}
-            removeArt={() => handleRemoveArt(art.id)}
-          ></ArtItem>
-        ))}
-      </div>
-      <div>
+    <Box>
+      <Container maxWidth="sm">
+        <h1>Art Rater</h1>
+      </Container>
+      <Container maxWidth="sm">
+        <Grid container spacing={2}>
+          {arts.map((art: { id: number; disabled: boolean }) => (
+            <Grid xs={6} sm={6} md={6} lg={6} xl={6} key={art.id}>
+              <ArtItem
+                id={art.id}
+                disabled={art.disabled}
+                removeArt={() => handleRemoveArt(art.id)}
+              ></ArtItem>
+            </Grid>
+          ))}
+        </Grid>
         <AddArtForm addArt={handleAddArt}></AddArtForm>
-      </div>
-    </div>
+      </Container>
+    </Box>
   );
 }
 

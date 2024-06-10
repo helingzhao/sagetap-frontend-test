@@ -44,15 +44,16 @@ test("for an art item, submit button is disabled until a rating is selected", ()
   render(<ArtItem {...testArt} removeArt={() => {}} />);
 
   //THEN - we should expect the button to be disabled
-  const submitButton = screen.getByText("Submit");
-  expect(submitButton).toBeDisabled();
+  let submitButton = screen.getByText("Submit");
+  expect(submitButton).toHaveProperty("disabled", true);
 
   //AND - when we select a rating
   const ratingButton = screen.getByText("3");
   fireEvent.click(ratingButton);
 
   //THEN - the submit button should no longer be disabled
-  expect(submitButton).not.toBeDisabled();
+  submitButton = screen.getByText("Submit"); //Grab the submit button again
+  expect(submitButton).toHaveProperty("disabled", false);
 });
 
 test("for an art item, clicking numbered button updates rating display below image to be that number", () => {
