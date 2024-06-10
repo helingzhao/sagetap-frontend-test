@@ -27,22 +27,6 @@ export function getImageUrl(id: string) {
 }
 
 export async function submitRating(id: number, rating: number) {
-  /* 
-      Please have the submit button POST to https://20e2q.mocklab.io/rating with the following payload:
-  
-        {
-          "id": {#id},
-          "rating": {#rating}
-        }
-  
-      Where id is the artwork's id, and rating is the selected rating.
-  
-      The endpoint should return the following:
-  
-      {
-        "message": "Success"
-      }
-    */
   try {
     const payload: RatingSubmissionRequest = {
       id: id,
@@ -57,7 +41,6 @@ export async function submitRating(id: number, rating: number) {
       {myApiName}.wiremockapi.cloud/{endpoint}
     */
 
-    //const response = await fetch("https://20e2q.mocklab.io/rating", {
     const response = await fetch("https://20e2q.wiremockapi.cloud/rating", {
       method: "POST",
       headers: {

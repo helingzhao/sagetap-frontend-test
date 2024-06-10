@@ -109,7 +109,7 @@ test("for an art item, clicking submit POSTs update, displays a toast success me
   const submitButton = screen.getByText("Submit");
   fireEvent.click(submitButton);
 
-  //THEN - we should see a success message
+  //THEN - we should see a success message on the page
   await waitFor(() => {
     const successMessage = screen.getByText(
       "Thank you for submitting your rating!"

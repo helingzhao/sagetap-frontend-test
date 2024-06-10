@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { Typography, Container, Button, Stack } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -39,7 +40,7 @@ function ArtItem(props: ArtItemProps) {
         if (error instanceof ArtworkFetchError) {
           setArtNotAvailable(true);
         } else {
-          alert(
+          toast(
             "Oops! Something went wrong here. We're sorry about that! Please try again, and if the issue persists please contact our support team."
           );
         }
@@ -58,14 +59,15 @@ function ArtItem(props: ArtItemProps) {
       .then(() => {
         setRatingSubmitted(true);
         setRatingSubmissionIsLoading(false);
+        toast("Rating successfully submitted!");
       })
       .catch((error) => {
         if (error instanceof RatingSubmissionError) {
-          alert(
+          toast(
             "Something went wrong with submitting your rating. We're sorry about that! Please try again, and if the issue persists please contact our support team."
           );
         } else {
-          alert(
+          toast(
             "Oops! Something went wrong here. We're sorry about that! Please try again, and if the issue persists please contact our support team."
           );
         }

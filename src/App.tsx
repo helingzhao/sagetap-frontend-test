@@ -1,6 +1,9 @@
 /* eslint-disable */
 
 import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Grid from "@mui/material/Unstable_Grid2"; // Grid version 2
 import { Box, Container, Typography } from "@mui/material";
 import ArtItem from "./components/ArtItem";
@@ -38,7 +41,7 @@ function App({ initialArts }: AppProps) {
   function handleAddArt(idToAdd: number) {
     const idExists = arts.some((art: Art) => art.id === idToAdd);
     if (idExists) {
-      alert(`We're already displaying art with id: ${idToAdd}.`);
+      toast(`We're already displaying art with id: ${idToAdd}.`);
       return;
     }
 
@@ -66,6 +69,7 @@ function App({ initialArts }: AppProps) {
       <Container>
         <AddArtForm addArt={handleAddArt}></AddArtForm>
       </Container>
+      <ToastContainer />
     </Box>
   );
 }
