@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Rating, Button, ButtonGroup } from "@mui/material/";
+import { Rating } from "@mui/material/";
 
 interface RatingButtonsProps {
   currentRating: number;
@@ -16,7 +15,7 @@ function RatingButtons(props: RatingButtonsProps) {
     <div>
       <div>
         <Rating
-          name="simple-controlled"
+          size="large"
           value={currentRating}
           onChange={(event, newValue) => {
             if (newValue != null) {

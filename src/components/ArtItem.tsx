@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Container, Button } from "@mui/material";
+import { Typography, Container, Button, Stack } from "@mui/material";
+
+import DeleteIcon from "@mui/icons-material/Delete";
+import SendIcon from "@mui/icons-material/Send";
 
 import Item from "../styling/Item";
 
@@ -86,7 +89,9 @@ function ArtItem(props: ArtItemProps) {
             <img width="100%" max-height={200} src={onLoanImage} />
           </Container>
           <br></br>
-          <Button onClick={() => removeArt(id)}>Remove Art</Button>
+          <Button startIcon={<DeleteIcon />} onClick={() => removeArt(id)}>
+            Remove Art
+          </Button>
         </Container>
       </Item>
     );
@@ -129,16 +134,22 @@ function ArtItem(props: ArtItemProps) {
           setCurrentRating={handleSetCurrentRating}
         ></RatingButtons>
         <br></br>
-        <Button
-          variant="contained"
-          hidden={ratingSubmitted || ratingSubmissionIsLoading}
-          disabled={!voted}
-          onClick={submit}
-        >
-          Submit
-        </Button>
-        <br></br>
-        <Button onClick={() => removeArt(id)}>Remove Art</Button>
+        <Stack direction="column" spacing={0.5}>
+          {(!ratingSubmitted || ratingSubmissionIsLoading) && (
+            <Button
+              endIcon={<SendIcon />}
+              variant="contained"
+              disabled={!voted}
+              onClick={submit}
+            >
+              Submit
+            </Button>
+          )}
+          <br></br>
+          <Button startIcon={<DeleteIcon />} onClick={() => removeArt(id)}>
+            Remove Art
+          </Button>
+        </Stack>
       </Container>
     </Item>
   );

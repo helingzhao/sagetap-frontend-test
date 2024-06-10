@@ -17,6 +17,7 @@ interface AppProps {
 }
 
 function App({ initialArts }: AppProps) {
+  // Can consider refactoring the default list of arts to a separate file
   const [arts, setArts] = useState<Art[]>(
     initialArts || [
       { id: 27992, disabled: false },
@@ -50,7 +51,7 @@ function App({ initialArts }: AppProps) {
         <Typography variant="h1">Art Rater</Typography>
       </Container>
       <Container>
-        <Grid container spacing={2}>
+        <Grid container spacing={1}>
           {arts.map((art: { id: number; disabled: boolean }) => (
             <Grid xs={6} sm={6} md={6} lg={6} xl={6} key={art.id}>
               <ArtItem
