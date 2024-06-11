@@ -80,11 +80,11 @@ test("for an art item, clicking numbered button updates rating display below ima
   render(<ArtItem {...testArt} removeArt={() => {}} />);
 
   //AND - we click on a numbered rating button
-  let ratingButton1 = screen.getByText("1 Star");
+  const ratingButton1 = screen.getByText("1 Star");
   fireEvent.click(ratingButton1);
 
   //AND - we click on a numbered rating button
-  let ratingButton2 = screen.getByText("2 Stars");
+  const ratingButton2 = screen.getByText("2 Stars");
   fireEvent.click(ratingButton2);
 
   //THEN - the rating display below the image should be the second rating we clicked
